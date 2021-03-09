@@ -7,21 +7,20 @@ export default function Bin2Dec(){
     const [decimal, setDecimal] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
  
-    async function handleNewIncident(e){
+    async function handleNumberConverter(e){
         e.preventDefault();
         setDecimal(0);
         setErrorMessage('')
 
-        if (binary.match(/^[0-1]+$/g) === null) {
+        let numerosSeparados = binary.split("", binary.length);
+
+        if (binary.match(/^[0-1]+$/g) === null || binary.length > 8) {
             setErrorMessage('You can only type 0 and 1!')
             return
-        }
-
-        let numerosSeparados = binary.split("", binary.length);
-        let numberlengh = numerosSeparados.length;
+        } 
 
         numerosSeparados.forEach((element, index) => {
-            let exponent = numberlengh - index - 1;
+            let exponent = numerosSeparados.length - index - 1;
                     
             setDecimal(function(decimal) {
                 return decimal + element * Math.pow(2, exponent);
@@ -32,19 +31,16 @@ export default function Bin2Dec(){
     return (
         <div className="content">
             <h1 className="titulo">Binary-to-Decimal Number Converter</h1>
-            <form onSubmit={handleNewIncident}>
+            <form className="form" onSubmit={handleNumberConverter}>
                 <input placeholder="Enter the binary number" type="number"
                     value={binary} onChange={ e => setBinary(e.target.value)} 
                 />
+                 <input placeholder="Decimal Number" disabled type="number"
+                    value={decimal}
+                />
                <button className="button" type="submit">Convert</button>
             </form>
-            {decimal ? (
-                <p className="p-resultado">Decimal Number: {decimal}</p>
-            ) : (
-                <p className="p-resultado">Enter the binary number</p>
-            )}
-
-            {errorMessage}
+            <p>{errorMessage}</p>
         </div>
     );
 }
